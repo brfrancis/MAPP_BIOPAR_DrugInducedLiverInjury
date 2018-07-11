@@ -75,6 +75,7 @@ pwr.p.test(h = h1, n = NULL, sig.level = 0.05, power = 0.9, alt = "greater")
 h1 <- ES.h(0.84, 0.52)
 pwr.p.test(h = h1, n = NULL, sig.level = 0.05, power = 0.9, alt = "greater")
 
+library(pROC)
 
 probs_dist=sapply(probs,function(x){sqrt(((sum(new[data3$LateALI==1]>x)/length(new[data3$LateALI==1])-1)^2)+((sum(new[data3$LateALI==0]<x)/length(new[data3$LateALI==0])-1)^2))})
 cut=median(probs[probs_dist==min(sapply(probs,function(x){sqrt(((sum(new[data3$LateALI==1]>x)/length(new[data3$LateALI==1])-1)^2)+((sum(new[data3$LateALI==0]<x)/length(new[data3$LateALI==0])-1)^2))}))])
@@ -128,7 +129,9 @@ compCalc(ODlogitN = ODlogit3,ODlogitO = ODlogitNothing)#+necrosis
 compCalc(ODlogitN = ODlogit4,ODlogitO = ODlogitNothing)#+apoptosis
 compCalc(ODlogitN = ODlogit1,ODlogitO = ODlogitNothing)#+HMGB1
 
+##### For new study sample size #####
 
+roc1<-roc(data3$LateALI, data3$miR122_Let_7d,ci=TRUE)
 
 #BIOPAR data
 dataOD_B<-dataOD_Combo[substr(dataOD_Combo$ID,1,1)=="B"& !is.na(dataOD_Combo$LateALI),]
@@ -222,7 +225,9 @@ ODlogit1 <- glm(SLALI ~ HMGB1, data=data3, family = "binomial")
 summary(ODlogit1)
 compCalc(ODlogitN = ODlogit1,ODlogitO = ODlogitNothing)
 
+##### For new study sample size #####
 
+roc2<-roc(data3$SLALI, data3$HMGB1,ci=TRUE)
 
 #Validation
 dataOD_B<-dataOD_Combo[substr(dataOD_Combo$ID,1,1)=="B"& !is.na(dataOD_Combo$LateALI),]
